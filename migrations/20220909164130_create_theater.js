@@ -17,5 +17,10 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    return knex.schema.dropTableIfExists("theater");
+    return knex.schema.alterTable("theater", (table) => {
+        table.dropForeign("movie_id")
+    })
+    .then(() => {
+        return knex.schema.dropTableIfExists("theater");
+    });
 };
